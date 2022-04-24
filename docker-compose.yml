@@ -1,0 +1,27 @@
+﻿version: '3.4'
+
+services:
+  umbraco9:
+    image: umbraco9
+    depends_on:
+      - sqlserver
+    build:
+      context: .
+      dockerfile: Umbraco.Test.Docker.Cms/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - "connection"
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    restart: always
+    volumes:
+      - umbraco.db:/var/opt/mssql/data
+    ports:
+      - "3090:1433"
+    environment:
+      - "ACCEPT_EULA=Y"
+      - "SA_PASSWORD=1StrongPwd!!"
+
+volumes:
+  umbraco.db:
